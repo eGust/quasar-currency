@@ -1,16 +1,19 @@
 import _ from 'lodash'
 import CURRENCIES from './currencies'
+import mutations from './mutations'
+import actions from './actions'
 
 export default {
   state: {
     rates: {},
-    rows: [],
-    fromColumns: [],
+    rows: [ 'USD', 'CNY', 'EUR', ],
+    fromColumns: [ { currency: 'USD', amount: 100, }, ],
     editingRow: null,
     editingCol: null,
+    dataSource: {},
   },
   getters: {
-    getRate: ({ rates }) => (fromCurr, toCurr) => fromCurr === toCurr ? 1 : rates[toCurr] / rates[fromCurr],
+    getRate: ({ rates }) => (fromCurr, toCurr) => fromCurr === toCurr ? 1 : (rates[toCurr] && rates[fromCurr] ? rates[toCurr] / rates[fromCurr] : NaN),
     currencyRows: (state, { getRate }) => _.map(state.rows,
       (toCurr, row) => _.map(fromColumns,
         ({ currency: fromCurr, amount: fromAmount }, col) => {
@@ -37,4 +40,6 @@ export default {
         .value()
     },
   },
+  mutations,
+  actions,
 }
