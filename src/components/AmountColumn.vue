@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  props: ['isSource', 'isEditing', 'rate', 'amount'],
+  props: ['isSource', 'isEditing', 'rate', 'amount', 'row', 'col'],
 }
 </script>
 

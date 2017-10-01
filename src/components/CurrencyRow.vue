@@ -4,6 +4,8 @@
       Currency(:currency='currency')
     td.amounts(v-for='amountCol in amountColumns')
       AmountColumn(
+        :row='amountCol.row'
+        :col='amountCol.col'
         :is-source='amountCol.isSource'
         :is-editing='amountCol.isEditing'
         :rate='amountCol.rate'

@@ -1,17 +1,19 @@
 <template lang="pug">
   #q-app
-    Hello
+    CurrencyTable(currency-rows=currencyRows column-count=columnCount)
 </template>
 
 <script>
-/*
- * Root component
- */
-import Hello from './components/Hello'
+import Vuex from 'vuex'
+import CurrencyTable from './components/CurrencyTable'
+import storeData from './store'
+
 export default {
   components: {
-    Hello
-  }
+    CurrencyTable
+  },
+  computed: Vuex.mapState(Object.keys(storeData.getters)),
+  methods: Vuex.mapState(Object.keys(storeData.actions)),
 }
 </script>
 

@@ -12,8 +12,11 @@ require(`quasar/dist/quasar.${__THEME}.css`)
 
 import Vue from 'vue'
 import Quasar from 'quasar'
+import Vuex from 'vuex'
+import storeData from './store'
 
 Vue.config.productionTip = false
+Vue.use(Vuex)
 Vue.use(Quasar) // Install Quasar Framework
 
 if (__THEME === 'mat') {
@@ -24,10 +27,13 @@ import 'quasar-extras/material-icons'
 // import 'quasar-extras/fontawesome'
 // import 'quasar-extras/animate'
 
+const store = new Vuex.Store(storeData)
+
 Quasar.start(() => {
   /* eslint-disable no-new */
   new Vue({
     el: '#q-app',
+    store,
     render: h => h(require('./App'))
   })
 })

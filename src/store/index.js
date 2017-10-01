@@ -2,6 +2,7 @@ import _ from 'lodash'
 import CURRENCIES from './currencies'
 import mutations from './mutations'
 import actions from './actions'
+import PROVIDERS from './providers'
 
 export default {
   state: {
@@ -10,14 +11,16 @@ export default {
     fromColumns: [ { currency: 'USD', amount: 100, }, ],
     editingRow: null,
     editingCol: null,
-    dataSource: {},
+    providers: _(PROVIDERS).values().cloneDeep(),
+    source: _.keys(PROVIDERS)[0],
   },
   getters: {
     getRate: ({ rates }) => (fromCurr, toCurr) => fromCurr === toCurr ? 1 : (rates[toCurr] && rates[fromCurr] ? rates[toCurr] / rates[fromCurr] : NaN),
     currencyRows: (state, { getRate }) => _.map(state.rows,
-      (toCurr, row) => _.map(fromColumns,
+      (toCurr, row) => _.map(state.fromColumns,
         ({ currency: fromCurr, amount: fromAmount }, col) => {
           const rate = getRate(fromCurr, toCurr)
+              , { editingRow, editingCol } = state
           return {
             row, col,
             rate,
@@ -39,6 +42,7 @@ export default {
         .map((v) => v).sort(({ order: o1 }, { order: o2 }) => o1 - o2)
         .value()
     },
+    provider: ({ source }) => PROVIDERS[source],
   },
   mutations,
   actions,
