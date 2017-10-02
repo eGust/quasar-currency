@@ -16,20 +16,23 @@ export default {
   },
   getters: {
     getRate: ({ rates }) => (fromCurr, toCurr) => fromCurr === toCurr ? 1 : (rates[toCurr] && rates[fromCurr] ? rates[toCurr] / rates[fromCurr] : NaN),
-    currencyRows: (state, { getRate }) => _.map(state.rows,
-      (toCurr, row) => _.map(state.fromColumns,
-        ({ currency: fromCurr, amount: fromAmount }, col) => {
-          const rate = getRate(fromCurr, toCurr)
-              , { editingRow, editingCol } = state
-          return {
-            row, col,
-            rate,
-            amount: fromAmount * rate,
-            isSource: fromCurr === toCurr,
-            isEditing: row === editingRow && col === editingCol,
+    currencyRows: ({ editingRow, editingCol, rows, fromColumns }, { getRate }) => 
+    _.map(rows,
+      (toCurr, row) => ({
+        currency: toCurr,
+        amountColumns: _.map(fromColumns,
+          ({ currency: fromCurr, amount: fromAmount }, col) => {
+            const rate = getRate(fromCurr, toCurr)
+            return {
+              row, col,
+              rate,
+              amount: fromAmount * rate,
+              isSource: fromCurr === toCurr,
+              isEditing: row === editingRow && col === editingCol,
+            }
           }
-        }
-      )
+        ),
+      })
     ),
     columnCount: ({ fromColumns }) => fromColumns.length,
     availableCurrencies: ({ fromColumns }) => {

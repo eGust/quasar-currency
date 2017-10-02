@@ -2,9 +2,11 @@
   table
     thead
       tr
-        th(v-for='n in (columnCount+1)')
+        td
+        th(v-for='(col, key) in fromColumns' :key='key')
+          .col {{ col.currency }}
     tbody
-      CurrencyRow(v-for='row in currencyRows' :currency='row.currency' :amountColumns='row.amountColumns')
+      CurrencyRow(v-for='row in currencyRows' :currency='row.currency' :amountColumns='row.amountColumns' :key='row.currency')
 </template>
 
 <script>
@@ -12,7 +14,7 @@ import CurrencyRow from './CurrencyRow'
 
 export default {
   components: { CurrencyRow },
-  props: ['currencyRows', 'columnCount'],
+  props: ['currencyRows', 'fromColumns'],
 }
 </script>
 

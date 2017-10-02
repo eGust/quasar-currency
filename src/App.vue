@@ -1,6 +1,6 @@
 <template lang="pug">
   #q-app
-    CurrencyTable(currency-rows=currencyRows column-count=columnCount)
+    CurrencyTable(:currency-rows='currencyRows' :from-columns='fromColumns')
 </template>
 
 <script>
@@ -12,7 +12,10 @@ export default {
   components: {
     CurrencyTable
   },
-  computed: Vuex.mapState(Object.keys(storeData.getters)),
+  computed: {
+    ...Vuex.mapState(Object.keys(storeData.state)),
+    ...Vuex.mapGetters(Object.keys(storeData.getters)),
+  },
   methods: Vuex.mapState(Object.keys(storeData.actions)),
 }
 </script>
