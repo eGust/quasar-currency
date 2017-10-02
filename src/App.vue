@@ -1,12 +1,12 @@
 <template lang="pug">
   #q-app
-    CurrencyTable(:currency-rows='currencyRows' :from-columns='fromColumns')
+    CurrencyTable(:currencyRows='currencyRows' :fromColumns='fromColumns' @commitAction='commitAction' @updateCurrencyRates='updateCurrencyRates')
 </template>
 
 <script>
 import Vuex from 'vuex'
-import CurrencyTable from './components/CurrencyTable'
 import storeData from './store'
+import CurrencyTable from './components/CurrencyTable'
 
 export default {
   components: {
@@ -16,7 +16,7 @@ export default {
     ...Vuex.mapState(Object.keys(storeData.state)),
     ...Vuex.mapGetters(Object.keys(storeData.getters)),
   },
-  methods: Vuex.mapState(Object.keys(storeData.actions)),
+  methods: Vuex.mapActions(Object.keys(storeData.actions)),
 }
 </script>
 

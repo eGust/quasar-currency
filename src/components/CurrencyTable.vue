@@ -1,10 +1,12 @@
 <template lang="pug">
-  table
+  table.q-table.highlight.bordered.cell-separator.striped(style='width: 100%; table-layout: fixed')
     thead
       tr
         td
         th(v-for='(col, key) in fromColumns' :key='key')
-          .col {{ col.currency }}
+          .row
+            .col-6 {{ col.currency }}
+            .col-6.text-right {{ col.amount }}
     tbody
       CurrencyRow(v-for='row in currencyRows' :currency='row.currency' :amountColumns='row.amountColumns' :key='row.currency')
 </template>
@@ -14,7 +16,7 @@ import CurrencyRow from './CurrencyRow'
 
 export default {
   components: { CurrencyRow },
-  props: ['currencyRows', 'fromColumns'],
+  props: ['currencyRows', 'fromColumns', 'editingAmount'],
 }
 </script>
 

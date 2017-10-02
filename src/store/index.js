@@ -8,7 +8,7 @@ export default {
   state: {
     rates: {},
     rows: [ 'USD', 'CNY', 'EUR', ],
-    fromColumns: [ { currency: 'USD', amount: 100, }, ],
+    fromColumns: [ { currency: 'USD', amount: 100, }, { currency: 'CNY', amount: 100, } ],
     editingRow: null,
     editingCol: null,
     providers: _(PROVIDERS).values().cloneDeep(),
@@ -16,7 +16,7 @@ export default {
   },
   getters: {
     getRate: ({ rates }) => (fromCurr, toCurr) => fromCurr === toCurr ? 1 : (rates[toCurr] && rates[fromCurr] ? rates[toCurr] / rates[fromCurr] : NaN),
-    currencyRows: ({ editingRow, editingCol, rows, fromColumns }, { getRate }) => 
+    currencyRows: ({ editingRow, editingCol, rows, fromColumns }, { getRate }) =>
     _.map(rows,
       (toCurr, row) => ({
         currency: toCurr,
@@ -26,6 +26,7 @@ export default {
             return {
               row, col,
               rate,
+              currency: fromCurr,
               amount: fromAmount * rate,
               isSource: fromCurr === toCurr,
               isEditing: row === editingRow && col === editingCol,
@@ -46,6 +47,7 @@ export default {
         .value()
     },
     provider: ({ source }) => PROVIDERS[source],
+    getCurrency: () => (curr) => CURRENCIES[curr],
   },
   mutations,
   actions,

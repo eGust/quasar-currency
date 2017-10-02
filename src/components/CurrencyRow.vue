@@ -6,8 +6,9 @@
       AmountColumn(
         :row='amountCol.row'
         :col='amountCol.col'
-        :is-source='amountCol.isSource'
-        :is-editing='amountCol.isEditing'
+        :currency='currency'
+        :isSource='amountCol.isSource'
+        :isEditing='amountCol.isEditing'
         :rate='amountCol.rate'
         :amount='amountCol.amount'
       )
@@ -19,7 +20,7 @@ import AmountColumn from './AmountColumn'
 
 export default {
   components: { AmountColumn, Currency },
-  props: ['currency', 'amountColumns'],
+  props: ['currency', 'amountColumns', 'editingAmount'],
 }
 </script>
 
