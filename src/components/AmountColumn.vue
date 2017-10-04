@@ -2,11 +2,13 @@
   .column-amount
     .editing(v-if='isEditing')
       q-input(
-        type="number"
-        v-model.number="editingAmount"
         ref="inputAmount"
-        :stack-label='curr.currencyName'
+        v-model.number="editingAmount"
+        type="number"
         placeholder='Amount'
+        :stack-label='curr.currencyName'
+        @keyup.enter='apply'
+        @keyup.esc='cancel'
         :prefix='unit'
         :after=`[
           {
@@ -16,7 +18,7 @@
           },
           {
             icon: 'done',
-            condition: editingAmount || 0 !== 0,
+            condition: (editingAmount || 0) !== 0,
             handler: apply,
           },
           {
@@ -28,15 +30,16 @@
     .display(v-else)
       .row.items-center
         .col-8
-          .amount(@dblclick='selectColumn') {{ amount ? `${unit} ${amount}` : amount }}
-        .col-4
-          q-btn.float-right(icon='edit' small round flat @click='selectColumn')
+          q-btn(icon='edit' small round flat color='light-blue-5' @click='selectColumn')
+        .col-4.text-right
+          .amount {{ amount ? `${unit} ${amount.toFixed(isSource ? 2 : 3)}` : '-' }}
       .rate(v-if='!isSource') Rate = {{ rate }}
 </template>
 
 <script>
 import Vue from 'vue'
 import { QBtn, QInput } from 'quasar'
+import Big from 'big.js'
 import Vuex from 'vuex'
 import storeData from '../store'
 
@@ -57,7 +60,7 @@ export default {
   },
   methods: {
     selectColumn: function () {
-      this.editingAmount = this.amount || 0
+      this.editingAmount = this.amount ? parseFloat(this.amount) : 0
       this.commitAction({action: 'selectColumn', payload: this})
       Vue.nextTick(() => {
         // console.log(this.$refs)
@@ -68,7 +71,9 @@ export default {
       this.editingAmount = ''
     },
     apply: function () {
-      this.commitAction({action: 'submitColumnAmount', payload: { amount: this.editingAmount }})
+      const amount = this.editingAmount
+      if (!amount) return
+      this.commitAction({action: 'submitColumnAmount', payload: { amount: new Big(amount).round(2) }})
     },
     cancel: function () {
       this.commitAction({action: 'cancelEditColumn'})

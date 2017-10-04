@@ -5,18 +5,25 @@
         td
         th(v-for='(col, key) in fromColumns' :key='key')
           .row
-            .col-6 {{ col.currency }}
-            .col-6.text-right {{ col.amount }}
+            .col-6
+              Currency(:currency='col.currency')
+            .col-6.text-right {{ col.amount.toFixed(2) }}
     tbody
       CurrencyRow(v-for='row in currencyRows' :currency='row.currency' :amountColumns='row.amountColumns' :key='row.currency')
+    tfoot
+      tr
+        th.text-center
+          q-btn(icon='add' round color='primary' @click='')
 </template>
 
 <script>
+import { QBtn } from 'quasar'
+import Currency from './Currency'
 import CurrencyRow from './CurrencyRow'
 
 export default {
-  components: { CurrencyRow },
-  props: ['currencyRows', 'fromColumns', 'editingAmount'],
+  components: { CurrencyRow, Currency, QBtn },
+  props: [ 'currencyRows', 'fromColumns', 'editingAmount' ],
 }
 </script>
 

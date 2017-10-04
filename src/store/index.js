@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import Big from 'big.js'
 import CURRENCIES from './currencies'
 import mutations from './mutations'
 import actions from './actions'
@@ -8,7 +9,7 @@ export default {
   state: {
     rates: {},
     rows: [ 'USD', 'CNY', 'EUR', ],
-    fromColumns: [ { currency: 'USD', amount: 100, }, { currency: 'CNY', amount: 100, } ],
+    fromColumns: [ { currency: 'USD', amount: new Big(100), }, { currency: 'CNY', amount: new Big(100), } ],
     editingRow: null,
     editingCol: null,
     providers: _(PROVIDERS).values().cloneDeep(),
@@ -27,7 +28,7 @@ export default {
               row, col,
               rate,
               currency: fromCurr,
-              amount: fromAmount * rate,
+              amount: _.isNaN(rate) ? NaN : fromAmount.times(rate),
               isSource: fromCurr === toCurr,
               isEditing: row === editingRow && col === editingCol,
             }
