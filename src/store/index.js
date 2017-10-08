@@ -5,15 +5,24 @@ import mutations from './mutations'
 import actions from './actions'
 import PROVIDERS from './providers'
 
+_.each(CURRENCIES, (cur) => {
+  cur.search = `${cur.curr} ${cur.currencyName}`.toLowerCase()
+})
+
 export default {
   state: {
     rates: {},
     rows: [ 'USD', 'CNY', 'EUR', ],
-    fromColumns: [ { currency: 'USD', amount: new Big(100), }, { currency: 'CNY', amount: new Big(100), } ],
+    fromColumns: [
+      { currency: 'USD', amount: new Big(100), },
+      { currency: 'CNY', amount: new Big(100), },
+      { currency: 'EUR', amount: new Big(100), },
+    ],
     editingRow: null,
     editingCol: null,
     providers: _(PROVIDERS).values().cloneDeep(),
     source: _.keys(PROVIDERS)[0],
+    changeRow: null,
   },
   getters: {
     getRate: ({ rates }) => (fromCurr, toCurr) => fromCurr === toCurr ? 1 : (rates[toCurr] && rates[fromCurr] ? rates[toCurr] / rates[fromCurr] : NaN),
@@ -36,11 +45,11 @@ export default {
         ),
       })
     ),
-    columnCount: ({ fromColumns }) => fromColumns.length,
-    availableCurrencies: ({ fromColumns }) => {
+    rowCount: ({ rows }) => rows.length,
+    availableCurrencies: ({ rows }) => {
       const available = {}
       _.each(CURRENCIES, (v, k) => available[k] = true)
-      _.each(fromColumns, ({currency}) => {
+      _.each(rows, (currency) => {
         available[currency] = false
       })
       return _(CURRENCIES).filter(({ curr }) => available[curr])
@@ -49,6 +58,7 @@ export default {
     },
     provider: ({ source }) => PROVIDERS[source],
     getCurrency: () => (curr) => CURRENCIES[curr],
+    rowCurrencyBeforeChange: ({ rows, changeRow }) => rows[changeRow] || null,
   },
   mutations,
   actions,

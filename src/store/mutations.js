@@ -21,4 +21,23 @@ export default {
   updateCurrencyRates(state, {rates}) {
     state.rates = rates
   },
+  editRow(state, {row}) {
+    state.changeRow = row
+  },
+  updateRow(state, {currency = null}) {
+    if (currency) {
+      Vue.set(state.rows, state.changeRow, currency)
+    }
+    state.changeRow = null
+  },
+  removeRow(state) {
+    Vue.delete(state.rows, state.changeRow)
+    state.changeRow = null
+  },
+  swapRow(state, {row, direction}) {
+    const newRow = row+direction
+        , currency = state.rows[row]
+    Vue.set(state.rows, row, state.rows[newRow])
+    Vue.set(state.rows, newRow, currency)
+  },
 }

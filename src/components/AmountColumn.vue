@@ -25,8 +25,8 @@
             icon: 'clear',
             handler: cancel,
           },
-        ]`,
-    )
+        ]`
+      )
     .display(v-else)
       .row.items-center
         .col-8

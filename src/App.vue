@@ -1,16 +1,28 @@
 <template lang="pug">
   #q-app
-    CurrencyTable(:currencyRows='currencyRows' :fromColumns='fromColumns' @commitAction='commitAction' @updateCurrencyRates='updateCurrencyRates')
+    ChangeRow(
+      v-if='changeRow != null'
+      :rowCurrencyBeforeChange='rowCurrencyBeforeChange'
+      :availableCurrencies='availableCurrencies'
+      @commitAction='commitAction'
+    )
+    CurrencyTable(
+      v-else
+      :currencyRows='currencyRows'
+      :fromColumns='fromColumns'
+      @commitAction='commitAction'
+    )
 </template>
 
 <script>
 import Vuex from 'vuex'
 import storeData from './store'
 import CurrencyTable from './components/CurrencyTable'
+import ChangeRow from './components/ChangeRow'
 
 export default {
   components: {
-    CurrencyTable
+    CurrencyTable, ChangeRow
   },
   computed: {
     ...Vuex.mapState(Object.keys(storeData.state)),
