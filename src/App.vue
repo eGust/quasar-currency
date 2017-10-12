@@ -4,6 +4,7 @@
       v-if='changeRow != null'
       :rowCurrencyBeforeChange='rowCurrencyBeforeChange'
       :availableCurrencies='availableCurrencies'
+      :removable='rows.length > 1'
       @commitAction='commitAction'
     )
     CurrencyTable(

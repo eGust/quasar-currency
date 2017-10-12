@@ -6,7 +6,7 @@
       q-item-main.header.text-center(v-if='rowCurrencyBeforeChange')
         .title Change Currency:
         Currency(:currency='rowCurrencyBeforeChange')
-        q-btn.float-right(icon='delete forever' color='red' @click='removeCurrency') Remove
+        q-btn.float-right(icon='delete forever' color='red' @click='removeCurrency' :disabled='!removable') Remove
       q-item-main(v-else)
         .text-center Add Currency
     q-item
@@ -35,7 +35,7 @@ export default {
     editingCurrency: null,
   }),
   components: { Currency, QList, QBtn, QItem, QItemMain, QItemSide, QInput },
-  props: [ 'rowCurrencyBeforeChange', 'availableCurrencies' ],
+  props: [ 'rowCurrencyBeforeChange', 'availableCurrencies', 'removable' ],
   computed: {
     filteredCurrencies: function () {
       const key = (this.editingCurrency || '').trim().toLowerCase()
