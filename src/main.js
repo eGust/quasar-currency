@@ -34,6 +34,6 @@ Quasar.start(() => {
   new Vue({
     el: '#q-app',
     store,
-    render: h => h(require('./App'))
+    render: h => h(require('./App').default)
   })
 })
