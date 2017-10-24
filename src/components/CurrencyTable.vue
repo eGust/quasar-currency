@@ -22,20 +22,30 @@
       tr
         th.text-center
           q-btn(icon='add' round color='primary' @click='addCurrencyRow')
+        td(:colspan='fromColumns.length')
+          .pull-left Fetched at {{ fetchedAt }}
+          .pull-right Timeout at {{ timeout }}
 </template>
 
 <script>
 import { QBtn } from 'quasar'
+import moment from 'moment'
 import Currency from './Currency'
 import CurrencyRow from './CurrencyRow'
 
 export default {
   components: { CurrencyRow, Currency, QBtn },
-  props: [ 'currencyRows', 'fromColumns' ],
+  props: [ 'currencyRows', 'fromColumns', 'timestamps' ],
   computed: {
     rowCount: function () {
       return this.currencyRows.length
-    }
+    },
+    fetchedAt: function () {
+      return this.timestamps.fetched ? moment(this.timestamps.fetched).format('HH:mm:ss') : 'N/A'
+    },
+    timeout: function () {
+      return this.timestamps.timeout ? moment(this.timestamps.timeout).format('HH:mm:ss') : 'N/A'
+    },
   },
   methods: {
     commitAction: function (data) {

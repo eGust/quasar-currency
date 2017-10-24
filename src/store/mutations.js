@@ -18,9 +18,6 @@ export default {
     state.editingRow = null
     state.editingCol = null
   },
-  updateCurrencyRates(state, {rates}) {
-    state.rates = rates
-  },
   editRow(state, {row}) {
     state.changeRow = row
   },
@@ -39,5 +36,11 @@ export default {
         , currency = state.rows[row]
     Vue.set(state.rows, row, state.rows[newRow])
     Vue.set(state.rows, newRow, currency)
+  },
+  setSource(state, {source}) {
+    state.source = source
+  },
+  updateCache(state, json) {
+    Vue.set(state.cache, state.source, json)
   },
 }

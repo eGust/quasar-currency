@@ -11,7 +11,7 @@ _.each(CURRENCIES, (cur) => {
 
 export default {
   state: {
-    rates: {},
+    cache: {},
     rows: [ 'USD', 'CNY', 'EUR', ],
     fromColumns: [
       { currency: 'USD', amount: new Big(100), },
@@ -20,31 +20,31 @@ export default {
     ],
     editingRow: null,
     editingCol: null,
-    providers: _(PROVIDERS).values().cloneDeep(),
     source: _.keys(PROVIDERS)[0],
     changeRow: null,
   },
   getters: {
-    getRate: ({ rates }) => (fromCurr, toCurr) => fromCurr === toCurr ? 1 : (rates[toCurr] && rates[fromCurr] ? rates[toCurr] / rates[fromCurr] : NaN),
-    currencyRows: ({ editingRow, editingCol, rows, fromColumns }, { getRate }) =>
-    _.map(rows,
-      (toCurr, row) => ({
-        currency: toCurr,
-        amountColumns: _.map(fromColumns,
-          ({ currency: fromCurr, amount: fromAmount }, col) => {
-            const rate = getRate(fromCurr, toCurr)
-            return {
-              row, col,
-              rate,
-              currency: fromCurr,
-              amount: _.isNaN(rate) ? NaN : fromAmount.times(rate),
-              isSource: fromCurr === toCurr,
-              isEditing: row === editingRow && col === editingCol,
+    currencyRows: ({ editingRow, editingCol, rows, fromColumns, cache, source, }) => {
+      const rates = (cache[source] || {}).rates || {}
+      return _.map(rows,
+        (toCurr, row) => ({
+          currency: toCurr,
+          amountColumns: _.map(fromColumns,
+            ({ currency: fromCurr, amount: fromAmount }, col) => {
+              const rate = fromCurr === toCurr ? 1 : (rates[toCurr] && rates[fromCurr] ? rates[toCurr] / rates[fromCurr] : NaN)
+              return {
+                row, col,
+                rate,
+                currency: fromCurr,
+                amount: _.isNaN(rate) ? NaN : fromAmount.times(rate),
+                isSource: fromCurr === toCurr,
+                isEditing: row === editingRow && col === editingCol,
+              }
             }
-          }
-        ),
-      })
-    ),
+          ),
+        })
+      )
+    },
     rowCount: ({ rows }) => rows.length,
     availableCurrencies: ({ rows }) => {
       const available = {}
@@ -59,6 +59,13 @@ export default {
     provider: ({ source }) => PROVIDERS[source],
     getCurrency: () => (curr) => CURRENCIES[curr],
     rowCurrencyBeforeChange: ({ rows, changeRow }) => rows[changeRow] || null,
+    timestamps: ({ cache, source }) => {
+      const cached = cache[source] || {}
+      return {
+        fetched: cached.timestamp ? cached.timestamp*1000 : null,
+        timeout: cached.timeout,
+      }
+    },
   },
   mutations,
   actions,

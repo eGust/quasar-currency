@@ -28,12 +28,13 @@ import 'quasar-extras/material-icons'
 // import 'quasar-extras/animate'
 
 const store = new Vuex.Store(storeData)
+store.dispatch('updateSourceRates')
 
 Quasar.start(() => {
   /* eslint-disable no-new */
   new Vue({
     el: '#q-app',
     store,
-    render: h => h(require('./App').default)
+    render: h => h(require('./App').default),
   })
 })
