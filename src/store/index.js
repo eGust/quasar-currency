@@ -60,11 +60,8 @@ export default {
     getCurrency: () => (curr) => CURRENCIES[curr],
     rowCurrencyBeforeChange: ({ rows, changeRow }) => rows[changeRow] || null,
     timestamps: ({ cache, source }) => {
-      const cached = cache[source] || {}
-      return {
-        fetched: cached.timestamp ? cached.timestamp*1000 : null,
-        timeout: cached.timeout,
-      }
+      const { fetched, timeout, timestamp } = cache[source] || {}
+      return { fetched, timeout, timestamp }
     },
   },
   mutations,

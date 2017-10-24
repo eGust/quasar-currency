@@ -11,7 +11,7 @@ export default {
     if (source) {
       commit('setSource', {source})
     }
-    
+
     source = source || state.source
     const cached = state.cache[source] || {}
     if (cached.timeout && Date.now() < cached.timeout) {
@@ -21,7 +21,8 @@ export default {
     fetch(API + source)
     .then((response) => response.json())
     .then((json) => {
-      json.timeout = Math.min(Date.now(), json.timestamp*1000) + PROVIDERS[source].timeout*1000
+      json.timeout = (json.updated_at + PROVIDERS[source].timeout) * 1000
+      json.fetched = Date.now()
       commit('updateCache', json)
     })
   },

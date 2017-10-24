@@ -23,8 +23,10 @@
         th.text-center
           q-btn(icon='add' round color='primary' @click='addCurrencyRow')
         td(:colspan='fromColumns.length')
-          .pull-left Fetched at {{ fetchedAt }}
-          .pull-right Timeout at {{ timeout }}
+          .row
+            .col-4.text-left Fetched at {{ fetched }}
+            .col-4.text-center Updated at {{ timestamp }}
+            .col-4.text-right Timeout at {{ timeout }}
 </template>
 
 <script>
@@ -40,11 +42,14 @@ export default {
     rowCount: function () {
       return this.currencyRows.length
     },
-    fetchedAt: function () {
+    fetched: function () {
       return this.timestamps.fetched ? moment(this.timestamps.fetched).format('HH:mm:ss') : 'N/A'
     },
     timeout: function () {
       return this.timestamps.timeout ? moment(this.timestamps.timeout).format('HH:mm:ss') : 'N/A'
+    },
+    timestamp: function () {
+      return this.timestamps.timestamp ? moment(this.timestamps.timestamp*1000).format('HH:mm:ss') : 'N/A'
     },
   },
   methods: {
