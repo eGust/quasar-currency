@@ -1,20 +1,20 @@
 <template lang="pug">
   #q-app
-    Toolbar(:source='source' @updateSourceRates='updateSourceRates')
-    ChangeRow(
-      v-if='changeRow != null'
-      :rowCurrencyBeforeChange='rowCurrencyBeforeChange'
-      :availableCurrencies='availableCurrencies'
-      :removable='rows.length > 1'
-      @commitAction='commitAction'
-    )
-    CurrencyTable(
-      v-else
-      :currencyRows='currencyRows'
-      :fromColumns='fromColumns'
-      :timestamps='timestamps'
-      @commitAction='commitAction'
-    )
+    .edit(v-if='changeRow != null')
+      ChangeRow(
+        :rowCurrencyBeforeChange='rowCurrencyBeforeChange'
+        :availableCurrencies='availableCurrencies'
+        :removable='rows.length > 1'
+        @commitAction='commitAction'
+      )
+    .main(v-else)
+      Toolbar(:source='source' @updateSourceRates='updateSourceRates')
+      CurrencyTable(
+        :currencyRows='currencyRows'
+        :fromColumns='fromColumns'
+        :timestamps='timestamps'
+        @commitAction='commitAction'
+      )
 </template>
 
 <script>

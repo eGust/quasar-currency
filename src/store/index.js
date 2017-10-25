@@ -4,23 +4,35 @@ import CURRENCIES from './currencies'
 import mutations from './mutations'
 import actions from './actions'
 import PROVIDERS from './providers'
+import storage from '../storage'
 
 _.each(CURRENCIES, (cur) => {
   cur.search = `${cur.curr} ${cur.currencyName}`.toLowerCase()
 })
 
-export default {
-  state: {
+const DEFAULT_STATE = {
     cache: {},
+    source: _.keys(PROVIDERS)[0],
     rows: [ 'USD', 'CNY', 'EUR', ],
     fromColumns: [
-      { currency: 'USD', amount: new Big(100), },
-      { currency: 'CNY', amount: new Big(100), },
-      { currency: 'EUR', amount: new Big(100), },
+      { currency: 'USD', amount: 100, },
+      { currency: 'CNY', amount: 100, },
     ],
+  }
+
+function getState() {
+  const { fromColumns, ...state } = storage.load() || DEFAULT_STATE
+  return {
+    ...state,
+    fromColumns: _.map(fromColumns, ({ currency, amount }) => ({ currency, amount: new Big(amount) })),
+  }
+}
+
+export default {
+  state: {
+    ...getState(),
     editingRow: null,
     editingCol: null,
-    source: _.keys(PROVIDERS)[0],
     changeRow: null,
   },
   getters: {
@@ -34,7 +46,7 @@ export default {
               const rate = fromCurr === toCurr ? 1 : (rates[toCurr] && rates[fromCurr] ? rates[toCurr] / rates[fromCurr] : NaN)
               return {
                 row, col,
-                rate,
+                rate: _.isNaN(rate) ? NaN : new Big(rate),
                 currency: fromCurr,
                 amount: _.isNaN(rate) ? NaN : fromAmount.times(rate),
                 isSource: fromCurr === toCurr,

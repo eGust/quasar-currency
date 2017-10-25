@@ -31,11 +31,8 @@ export default {
     Vue.delete(state.rows, state.changeRow)
     state.changeRow = null
   },
-  swapRow(state, {row, direction}) {
-    const newRow = row+direction
-        , currency = state.rows[row]
-    Vue.set(state.rows, row, state.rows[newRow])
-    Vue.set(state.rows, newRow, currency)
+  setCurrencyRows(state, {rows}) {
+    Vue.set(state, 'rows', rows)
   },
   setSource(state, {source}) {
     state.source = source

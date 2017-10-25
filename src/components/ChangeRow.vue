@@ -15,7 +15,7 @@
           stack-label='Select Currency'
           v-model="editingCurrency"
           ref="inputCurrency"
-          placeholder='Type to filter...'
+          placeholder='Type to Search...'
           autofocus
         )
     q-item(v-for='currency in filteredCurrencies' :key='currency.curr' link @click='updateCurrency(currency.curr)')

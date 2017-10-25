@@ -29,11 +29,11 @@
       )
     .display(v-else)
       .row.items-center
-        .col-8
+        .col-4
           q-btn(icon='edit' small round flat color='light-blue-5' @click='selectColumn')
-        .col-4.text-right
+        .col-8.text-right
           .amount {{ amount ? `${unit} ${amount.toFixed(isSource ? 2 : 3)}` : '-' }}
-      .rate(v-if='!isSource') Rate = {{ rate }}
+      .rate(v-if='!isSource') Rate = {{ rate ? rate.toFixed(4) : rate }}
 </template>
 
 <script>
@@ -60,10 +60,9 @@ export default {
   },
   methods: {
     selectColumn: function () {
-      this.editingAmount = this.amount ? parseFloat(this.amount) : 0
+      this.editingAmount = this.amount ? parseFloat(this.amount.toFixed(2)) : 0
       this.commitAction({action: 'selectColumn', payload: this})
       Vue.nextTick(() => {
-        // console.log(this.$refs)
         this.$refs.inputAmount.select()
       })
     },
@@ -83,4 +82,8 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style scoped lang="scss">
+.rate {
+  font-size: 11pt;
+}
+</style>

@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .currency {
   .name {
     display: inline-block;

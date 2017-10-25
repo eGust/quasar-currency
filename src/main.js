@@ -14,6 +14,7 @@ import Vue from 'vue'
 import Quasar from 'quasar'
 import Vuex from 'vuex'
 import storeData from './store'
+import storage from './storage'
 
 Vue.config.productionTip = false
 Vue.use(Vuex)
@@ -29,6 +30,15 @@ import 'quasar-extras/material-icons'
 
 const store = new Vuex.Store(storeData)
 store.dispatch('updateSourceRates')
+
+function onStorageChanged(state) {
+  storage.save(state)
+}
+
+store.watch(
+  ({ cache, source, rows, fromColumns }) => ({ cache, source, rows, fromColumns }),
+  onStorageChanged
+)
 
 Quasar.start(() => {
   /* eslint-disable no-new */

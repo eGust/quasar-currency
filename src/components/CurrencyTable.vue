@@ -8,9 +8,9 @@
             .col-6
               Currency(:currency='col.currency')
             .col-6.text-right {{ col.amount.toFixed(2) }}
-    tbody
+    Draggable(v-model='rows' element='tbody' :options='draggableOptions')
       CurrencyRow(
-        v-for='(row, i) in currencyRows'
+        v-for='(row, i) in rows'
         :currency='row.currency'
         :amountColumns='row.amountColumns'
         :key='row.currency'
@@ -23,7 +23,7 @@
         th.text-center
           q-btn(icon='add' round color='primary' @click='addCurrencyRow')
         td(:colspan='fromColumns.length')
-          .row
+          .row.timestamp
             .col-4.text-left Fetched at {{ fetched }}
             .col-4.text-center Updated at {{ timestamp }}
             .col-4.text-right Timeout at {{ timeout }}
@@ -34,11 +34,22 @@ import { QBtn } from 'quasar'
 import moment from 'moment'
 import Currency from './Currency'
 import CurrencyRow from './CurrencyRow'
+import Draggable from 'vuedraggable'
+
+const DRAGGABLE_OPTIONS = { handle: '.drag-handle' }
 
 export default {
-  components: { CurrencyRow, Currency, QBtn },
+  components: { CurrencyRow, Currency, QBtn, Draggable },
   props: [ 'currencyRows', 'fromColumns', 'timestamps' ],
   computed: {
+    rows: {
+      get() {
+        return this.currencyRows
+      },
+      set(value) {
+        this.$store.commit('setCurrencyRows', {rows: value.map(({currency}) => currency)})
+      },
+    },
     rowCount: function () {
       return this.currencyRows.length
     },
@@ -51,6 +62,7 @@ export default {
     timestamp: function () {
       return this.timestamps.timestamp ? moment(this.timestamps.timestamp*1000).format('HH:mm:ss') : 'N/A'
     },
+    draggableOptions: () => DRAGGABLE_OPTIONS,
   },
   methods: {
     commitAction: function (data) {
@@ -63,5 +75,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
+.timestamp {
+  font-size: 11pt;
+}
 </style>
