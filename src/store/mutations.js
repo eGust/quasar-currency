@@ -2,9 +2,8 @@ import _ from 'lodash'
 import Vue from 'vue'
 
 export default {
-  selectColumn(state, {row, col}) {
-    state.editingRow = row
-    state.editingCol = col
+  editColumnAmount(state, {row = null, col = null}) {
+    state.editingAmount = row && {row, col}
   },
   cancelEditColumn(state) {
     state.editingRow = null
@@ -18,18 +17,18 @@ export default {
     state.editingRow = null
     state.editingCol = null
   },
-  editRow(state, {row}) {
-    state.changeRow = row
+  editCurrencyRow(state, {row}) {
+    state.editingCurrencyRow = row
   },
   updateRow(state, {currency = null}) {
     if (currency) {
-      Vue.set(state.rows, state.changeRow, currency)
+      Vue.set(state.rows, state.editingCurrencyRow, currency)
     }
-    state.changeRow = null
+    state.editingCurrencyRow = null
   },
   removeRow(state) {
-    Vue.delete(state.rows, state.changeRow)
-    state.changeRow = null
+    Vue.delete(state.rows, state.editingCurrencyRow)
+    state.editingCurrencyRow = null
   },
   setCurrencyRows(state, {rows}) {
     Vue.set(state, 'rows', rows)

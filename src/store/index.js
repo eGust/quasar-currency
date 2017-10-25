@@ -31,12 +31,11 @@ function getState() {
 export default {
   state: {
     ...getState(),
-    editingRow: null,
-    editingCol: null,
-    changeRow: null,
+    editingAmount: null,
+    editingCurrencyRow: null,
   },
   getters: {
-    currencyRows: ({ editingRow, editingCol, rows, fromColumns, cache, source, }) => {
+    currencyRows: ({ rows, fromColumns, cache, source, }) => {
       const rates = (cache[source] || {}).rates || {}
       return _.map(rows,
         (toCurr, row) => ({
@@ -50,7 +49,6 @@ export default {
                 currency: fromCurr,
                 amount: _.isNaN(rate) ? NaN : fromAmount.times(rate),
                 isSource: fromCurr === toCurr,
-                isEditing: row === editingRow && col === editingCol,
               }
             }
           ),
@@ -70,7 +68,7 @@ export default {
     },
     provider: ({ source }) => PROVIDERS[source],
     getCurrency: () => (curr) => CURRENCIES[curr],
-    rowCurrencyBeforeChange: ({ rows, changeRow }) => rows[changeRow] || null,
+    rowCurrencyBeforeChange: ({ rows, editingCurrencyRow }) => rows[editingCurrencyRow] || null,
     timestamps: ({ cache, source }) => {
       const { fetched, timeout, timestamp } = cache[source] || {}
       return { fetched, timeout, timestamp }

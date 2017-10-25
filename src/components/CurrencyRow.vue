@@ -11,7 +11,6 @@
         :col='amountCol.col'
         :currency='currency'
         :isSource='amountCol.isSource'
-        :isEditing='amountCol.isEditing'
         :rate='amountCol.rate'
         :amount='amountCol.amount'
       )
@@ -27,7 +26,7 @@ export default {
   props: ['currency', 'amountColumns', 'editingAmount', 'order', 'rowCount'],
   methods: {
     startEditRow: function () {
-      this.$emit('commitAction', {action: 'editRow', payload: {row: this.order}})
+      this.$emit('commitAction', {action: 'editCurrencyRow', payload: {row: this.order}})
     },
     reorder: function (direction) {
       this.$emit('commitAction', {action: 'swapRow', payload: {row: this.order, direction}})

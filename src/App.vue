@@ -1,14 +1,18 @@
 <template lang="pug">
   #q-app
-    .edit(v-if='changeRow != null')
-      ChangeRow(
-        :rowCurrencyBeforeChange='rowCurrencyBeforeChange'
-        :availableCurrencies='availableCurrencies'
-        :removable='rows.length > 1'
-        @commitAction='commitAction'
-      )
-    .main(v-else)
-      Toolbar(:source='source' @updateSourceRates='updateSourceRates')
+    EditRowCurrency(
+      v-if='editingCurrencyRow != null'
+      :rowCurrencyBeforeChange='rowCurrencyBeforeChange'
+      :availableCurrencies='availableCurrencies'
+      :removable='rows.length > 1'
+      @commitAction='commitAction'
+    )
+    EditColumnAmount(
+      v-if='editingAmount != null'
+      @commitAction='commitAction'
+    )
+    .main(v-show='editingCurrencyRow == null && editingAmount == null')
+      MainToolbar(:source='source' @updateSourceRates='updateSourceRates')
       CurrencyTable(
         :currencyRows='currencyRows'
         :fromColumns='fromColumns'
@@ -20,13 +24,14 @@
 <script>
 import Vuex from 'vuex'
 import storeData from './store'
-import Toolbar from './components/Toolbar'
+import MainToolbar from './components/MainToolbar'
 import CurrencyTable from './components/CurrencyTable'
-import ChangeRow from './components/ChangeRow'
+import EditRowCurrency from './components/EditRowCurrency'
+import EditColumnAmount from './components/EditColumnAmount'
 
 export default {
   components: {
-    Toolbar, CurrencyTable, ChangeRow
+    MainToolbar, CurrencyTable, EditRowCurrency, EditColumnAmount
   },
   computed: {
     ...Vuex.mapState(Object.keys(storeData.state)),
@@ -36,4 +41,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss">
+  #q-app {
+    display: block;
+    margin: 0 auto;
+    max-width: 960px;
+  }
+</style>

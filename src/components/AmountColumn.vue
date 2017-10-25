@@ -1,39 +1,11 @@
 <template lang="pug">
   .column-amount
-    .editing(v-if='isEditing')
-      q-input(
-        ref="inputAmount"
-        v-model.number="editingAmount"
-        type="number"
-        placeholder='Amount'
-        :stack-label='curr.currencyName'
-        @keyup.enter='apply'
-        @keyup.esc='cancel'
-        :prefix='unit'
-        :after=`[
-          {
-            icon: 'cancel',
-            content: true,
-            handler: clear,
-          },
-          {
-            icon: 'done',
-            condition: (editingAmount || 0) !== 0,
-            handler: apply,
-          },
-          {
-            icon: 'clear',
-            handler: cancel,
-          },
-        ]`
-      )
-    .display(v-else)
-      .row.items-center
-        .col-4
-          q-btn(icon='edit' small round flat color='light-blue-5' @click='selectColumn')
-        .col-8.text-right
-          .amount {{ amount ? `${unit} ${amount.toFixed(isSource ? 2 : 3)}` : '-' }}
-      .rate(v-if='!isSource') Rate = {{ rate ? rate.toFixed(4) : rate }}
+    .row.items-center
+      .col-4
+        q-btn(icon='edit' small round flat color='light-blue-5' @click='editColumnAmount')
+      .col-8.text-right
+        .amount {{ amount ? `${unit} ${amount.toFixed(isSource ? 2 : 3)}` : '-' }}
+    .rate(v-if='!isSource') Rate = {{ rate ? rate.toFixed(4) : rate }}
 </template>
 
 <script>
@@ -48,7 +20,7 @@ export default {
     editingAmount: 0,
   }),
   components: { QBtn, QInput },
-  props: ['isSource', 'isEditing', 'rate', 'amount', 'row', 'col', 'currency'],
+  props: ['isSource', 'rate', 'amount', 'row', 'col', 'currency'],
   computed: {
     ...Vuex.mapGetters(['getCurrency']),
     curr: function () {
@@ -59,12 +31,9 @@ export default {
     },
   },
   methods: {
-    selectColumn: function () {
+    editColumnAmount: function () {
       this.editingAmount = this.amount ? parseFloat(this.amount.toFixed(2)) : 0
-      this.commitAction({action: 'selectColumn', payload: this})
-      Vue.nextTick(() => {
-        this.$refs.inputAmount.select()
-      })
+      this.commitAction({action: 'editColumnAmount', payload: this})
     },
     clear: function () {
       this.editingAmount = ''

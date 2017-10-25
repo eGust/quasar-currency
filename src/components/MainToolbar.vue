@@ -1,7 +1,12 @@
 <template lang="pug">
   q-toolbar(color='yellow')
     q-toolbar-title.dark-text eCurrency v2.0.0
-    q-select(stack-label="Source" :options='providerList' :value='source' @change='changeSource')
+    q-select(
+      stack-label="Source" 
+      @change='changeSource'
+      :value='source' 
+      :options=`providerList`
+    )
 </template>
 
 <script>

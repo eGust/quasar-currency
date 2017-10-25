@@ -69,7 +69,7 @@ export default {
       this.$emit('commitAction', data)
     },
     addCurrencyRow: function () {
-      this.$emit('commitAction', {action: 'editRow', payload: {row: this.rowCount}})
+      this.$emit('commitAction', {action: 'editCurrencyRow', payload: {row: this.rowCount}})
     },
   },
 }
