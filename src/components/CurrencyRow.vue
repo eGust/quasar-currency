@@ -25,11 +25,11 @@ export default {
   components: { AmountColumn, Currency, QBtn, QIcon },
   props: ['currency', 'amountColumns', 'editingAmount', 'order', 'rowCount'],
   methods: {
-    startEditRow: function () {
-      this.$emit('commitAction', {action: 'editCurrencyRow', payload: {row: this.order}})
+    startEditRow() {
+      this.$store.commit('editCurrencyRow', {row: this.order})
     },
-    reorder: function (direction) {
-      this.$emit('commitAction', {action: 'swapRow', payload: {row: this.order, direction}})
+    reorder(direction) {
+      this.$store.commit('swapRow', {row: this.order, direction})
     },
   }
 }

@@ -1,21 +1,27 @@
-import _ from 'lodash'
+import Big from 'big.js'
 import Vue from 'vue'
 
 export default {
-  editColumnAmount(state, {row = null, col = null}) {
-    state.editingAmount = row && {row, col}
+  editColumnAmount(state, payload = {}) {
+    const {row = null, col = null, amount = null} = payload
+    state.editingAmount = row == null ? null : {
+      row, col,
+      amount: parseFloat(amount.toFixed(2)),
+      current: state.fromColumns[col],
+      toCurrency: state.rows[row],
+    }
   },
   cancelEditColumn(state) {
     state.editingRow = null
     state.editingCol = null
   },
   submitColumnAmount(state, {amount}) {
-    Vue.set(state.fromColumns, state.editingCol, {
-      currency: state.rows[state.editingRow],
-      amount,
+    const { col, toCurrency } = state.editingAmount
+    Vue.set(state.fromColumns, col, {
+      currency: toCurrency,
+      amount: new Big(amount),
     })
-    state.editingRow = null
-    state.editingCol = null
+    state.editingAmount = null
   },
   editCurrencyRow(state, {row}) {
     state.editingCurrencyRow = row

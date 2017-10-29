@@ -1,15 +1,23 @@
 <template lang="pug">
   .wrap
     q-toolbar
-      q-btn(icon='clear' small round flat @click='close')
-      q-toolbar-title Edit Amount
-      q-btn(icon='done' small round flat @click='close')
-    .editing
-      q-input(
+      q-btn(icon='clear' small round flat @click='cancel')
+      q-toolbar-title.row.items-center.justify-center
+          .col-auto(v-if='editing.current.currency != editing.toCurrency') From:
+          .col-auto.currency
+            Currency(:currency='editing.current.currency')
+          .col-auto {{ editing.current.amount.toFixed(2) }}
+      q-btn(icon='done' small round flat :disable='editingAmount==0' @click='apply')
+    .row.items-center.h-padding
+      .col-auto To:
+      Currency.currency.col-auto(v-if='editing.current.currency != editing.toCurrency' :currency='editing.toCurrency')
+      q-input.amount.col(
         ref="inputAmount"
         v-model.number="editingAmount"
         type="number"
         placeholder='Amount'
+        @keyup.enter='apply'
+        @keyup.esc='cancel'
         :after=`[
           {
             icon: 'cancel',
@@ -22,24 +30,48 @@
 
 <script>
 import { QToolbar, QToolbarTitle, QBtn, QInput } from 'quasar'
-import _ from 'lodash'
+import Vue from 'vue'
+import Currency from './Currency'
 
 export default {
-  components: { QToolbar, QToolbarTitle, QBtn, QInput },
+  data: () => ({
+    editingAmount: 0,
+  }),
+  components: { QToolbar, QToolbarTitle, QBtn, QInput, Currency },
+  props: ['editing'],
   methods: {
-    close() {
-      this.$emit('commitAction', {action: 'editColumnAmount'})
+    cancel() {
+      this.$store.commit('editColumnAmount')
     },
-  }
+    clear() {
+      this.editingAmount = 0
+    },
+    apply() {
+      const amount = this.editingAmount
+      if (amount == 0) return;
+      this.$store.commit('submitColumnAmount', { amount })
+    },
+  },
+  beforeMount() {
+    this.editingAmount = this.editing.amount
+    Vue.nextTick(() => {
+      // console.log(this.$refs)
+      this.$refs.inputAmount.select()
+    })
+  },
 }
 
-/*
-        :stack-label='curr.currencyName'
-        @keyup.enter='apply'
-        @keyup.esc='cancel'
-        :prefix='unit'
-*/
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
+.h-padding {
+  padding: 0 5px;
+}
+.currency {
+  padding: 5px;
+}
+.amount {
+  padding-left: 10px;
+  padding-right: 10px;
+}
 </style>

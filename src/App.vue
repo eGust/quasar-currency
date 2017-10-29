@@ -5,11 +5,10 @@
       :rowCurrencyBeforeChange='rowCurrencyBeforeChange'
       :availableCurrencies='availableCurrencies'
       :removable='rows.length > 1'
-      @commitAction='commitAction'
     )
     EditColumnAmount(
       v-if='editingAmount != null'
-      @commitAction='commitAction'
+      :editing='editingAmount'
     )
     .main(v-show='editingCurrencyRow == null && editingAmount == null')
       MainToolbar(:source='source' @updateSourceRates='updateSourceRates')
@@ -17,7 +16,6 @@
         :currencyRows='currencyRows'
         :fromColumns='fromColumns'
         :timestamps='timestamps'
-        @commitAction='commitAction'
       )
 </template>
 

@@ -5,3 +5,5 @@ dist/
 npm-debug.log*
 cordova/platforms
 cordova/plugins
+node_modules.win/
+node_modules.osx/

@@ -16,7 +16,6 @@
         :key='row.currency'
         :order='i'
         :rowCount='rowCount'
-        @commitAction='commitAction'
       )
     tfoot
       tr
@@ -65,11 +64,8 @@ export default {
     draggableOptions: () => DRAGGABLE_OPTIONS,
   },
   methods: {
-    commitAction: function (data) {
-      this.$emit('commitAction', data)
-    },
     addCurrencyRow: function () {
-      this.$emit('commitAction', {action: 'editCurrencyRow', payload: {row: this.rowCount}})
+      this.$store.commit('editCurrencyRow', {row: this.rowCount})
     },
   },
 }

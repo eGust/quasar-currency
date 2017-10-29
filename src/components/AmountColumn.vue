@@ -9,16 +9,12 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import { QBtn, QInput } from 'quasar'
 import Big from 'big.js'
 import Vuex from 'vuex'
 import storeData from '../store'
 
 export default {
-  data: () => ({
-    editingAmount: 0,
-  }),
   components: { QBtn, QInput },
   props: ['isSource', 'rate', 'amount', 'row', 'col', 'currency'],
   computed: {
@@ -33,20 +29,8 @@ export default {
   methods: {
     editColumnAmount: function () {
       this.editingAmount = this.amount ? parseFloat(this.amount.toFixed(2)) : 0
-      this.commitAction({action: 'editColumnAmount', payload: this})
+      this.$store.commit('editColumnAmount', this)
     },
-    clear: function () {
-      this.editingAmount = ''
-    },
-    apply: function () {
-      const amount = this.editingAmount
-      if (!amount) return
-      this.commitAction({action: 'submitColumnAmount', payload: { amount: new Big(amount).round(2) }})
-    },
-    cancel: function () {
-      this.commitAction({action: 'cancelEditColumn'})
-    },
-    ...Vuex.mapActions(Object.keys(storeData.actions)),
   },
 }
 </script>

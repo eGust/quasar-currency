@@ -65,10 +65,10 @@ export default {
   },
   methods: {
     removeCurrency: function () {
-      this.$emit('commitAction', {action: 'removeRow'})
+      this.$store.commit('removeRow')
     },
     updateCurrency: function (currency) {
-      this.$emit('commitAction', {action: 'updateRow', payload: { currency }})
+      this.$store.commit('updateRow', { currency })
     },
   },
 }
