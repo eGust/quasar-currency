@@ -3,14 +3,14 @@
     q-toolbar
       q-btn(icon='clear' small round flat @click='cancel')
       q-toolbar-title.row.items-center.justify-center
-          .col-auto(v-if='editing.current.currency != editing.toCurrency') From:
+          .col-auto From:
           .col-auto.currency
-            Currency(:currency='editing.current.currency')
-          .col-auto {{ editing.current.amount.toFixed(2) }}
+            Currency(:currency='editing.fromCurrency')
+          .col-auto {{ editing.fromAmount }}
       q-btn(icon='done' small round flat :disable='editingAmount==0' @click='apply')
     .row.items-center.h-padding
-      .col-auto To:
-      Currency.currency.col-auto(v-if='editing.current.currency != editing.toCurrency' :currency='editing.toCurrency')
+      .col-auto New:
+      Currency.currency.col-auto(:currency='editing.toCurrency')
       q-input.amount.col(
         ref="inputAmount"
         v-model.number="editingAmount"
@@ -45,6 +45,9 @@ export default {
     },
     clear() {
       this.editingAmount = 0
+      Vue.nextTick(() => {
+        this.$refs.inputAmount.select()
+      })
     },
     apply() {
       const amount = this.editingAmount
@@ -53,9 +56,8 @@ export default {
     },
   },
   beforeMount() {
-    this.editingAmount = this.editing.amount
+    this.editingAmount = this.editing.toAmount
     Vue.nextTick(() => {
-      // console.log(this.$refs)
       this.$refs.inputAmount.select()
     })
   },

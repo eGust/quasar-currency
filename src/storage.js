@@ -6,7 +6,7 @@ export default {
   load() {
     return store.get(STORE_KEY)
   },
-  save: function (value) {
+  save(value) {
     store.set(STORE_KEY, value)
   },
 }

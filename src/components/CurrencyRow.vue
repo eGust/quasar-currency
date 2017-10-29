@@ -7,12 +7,8 @@
         q-btn(icon='settings' small round flat color='secondary' @click='startEditRow')
     td.amounts(v-for='amountCol in amountColumns')
       AmountColumn(
-        :row='amountCol.row'
-        :col='amountCol.col'
+        :amountColumn='amountCol'
         :currency='currency'
-        :isSource='amountCol.isSource'
-        :rate='amountCol.rate'
-        :amount='amountCol.amount'
       )
 </template>
 

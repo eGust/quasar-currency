@@ -37,7 +37,7 @@ export default {
   components: { Currency, QList, QBtn, QItem, QItemMain, QItemSide, QInput },
   props: [ 'rowCurrencyBeforeChange', 'availableCurrencies', 'removable' ],
   computed: {
-    filteredCurrencies: function () {
+    filteredCurrencies() {
       const key = (this.editingCurrency || '').trim().toLowerCase()
           , matched = []
           , unmatched = []
@@ -64,10 +64,10 @@ export default {
     },
   },
   methods: {
-    removeCurrency: function () {
+    removeCurrency() {
       this.$store.commit('removeRow')
     },
-    updateCurrency: function (currency) {
+    updateCurrency(currency) {
       this.$store.commit('updateRow', { currency })
     },
   },

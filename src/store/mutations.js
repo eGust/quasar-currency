@@ -2,21 +2,17 @@ import Big from 'big.js'
 import Vue from 'vue'
 
 export default {
-  editColumnAmount(state, payload = {}) {
-    const {row = null, col = null, amount = null} = payload
-    state.editingAmount = row == null ? null : {
-      row, col,
-      amount: parseFloat(amount.toFixed(2)),
-      current: state.fromColumns[col],
-      toCurrency: state.rows[row],
+  editColumnAmount(state, payload = null) {
+    if (payload) {
+      const from = state.fromColumns[payload.col]
+      payload.fromAmount = from.amount.toFixed(2)
+      payload.fromCurrency = from.currency
     }
-  },
-  cancelEditColumn(state) {
-    state.editingRow = null
-    state.editingCol = null
+    state.editingAmount = payload
   },
   submitColumnAmount(state, {amount}) {
     const { col, toCurrency } = state.editingAmount
+    console.log({col, toCurrency, amount})
     Vue.set(state.fromColumns, col, {
       currency: toCurrency,
       amount: new Big(amount),

@@ -23,7 +23,7 @@ export default {
     providerList: () => PROVIDER_OPTIONS,
   },
   methods: {
-    changeSource: function (source) {
+    changeSource(source) {
       this.$emit('updateSourceRates', source)
     },
   },

@@ -4,10 +4,12 @@
       tr
         td
         th(v-for='(col, key) in fromColumns' :key='key')
-          .row
-            .col-6
+          .row.items-center
+            .col-auto
               Currency(:currency='col.currency')
-            .col-6.text-right {{ col.amount.toFixed(2) }}
+            .col.text-right {{ col.amount.toFixed(2) }}
+            .col-auto
+              q-btn(icon='edit' small round flat color='light-blue-5' @click='editColumnAmount(key, col)')
     Draggable(v-model='rows' element='tbody' :options='draggableOptions')
       CurrencyRow(
         v-for='(row, i) in rows'
@@ -49,23 +51,30 @@ export default {
         this.$store.commit('setCurrencyRows', {rows: value.map(({currency}) => currency)})
       },
     },
-    rowCount: function () {
+    rowCount() {
       return this.currencyRows.length
     },
-    fetched: function () {
+    fetched() {
       return this.timestamps.fetched ? moment(this.timestamps.fetched).format('HH:mm:ss') : 'N/A'
     },
-    timeout: function () {
+    timeout() {
       return this.timestamps.timeout ? moment(this.timestamps.timeout).format('HH:mm:ss') : 'N/A'
     },
-    timestamp: function () {
+    timestamp() {
       return this.timestamps.timestamp ? moment(this.timestamps.timestamp*1000).format('HH:mm:ss') : 'N/A'
     },
     draggableOptions: () => DRAGGABLE_OPTIONS,
   },
   methods: {
-    addCurrencyRow: function () {
+    addCurrencyRow() {
       this.$store.commit('editCurrencyRow', {row: this.rowCount})
+    },
+    editColumnAmount(col, {amount, currency}) {
+      this.$store.commit('editColumnAmount', {
+        col,
+        toCurrency: currency,
+        toAmount: parseFloat(amount.toFixed(2)),
+      })
     },
   },
 }
@@ -73,6 +82,6 @@ export default {
 
 <style scoped lang="scss">
 .timestamp {
-  font-size: 11pt;
+  font-size: 9pt;
 }
 </style>
