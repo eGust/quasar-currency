@@ -5,11 +5,11 @@
 </template>
 
 <script>
-require('../assets/flags.scss')
+import '../assets/flags.scss';
 
 export default {
   props: ['currency'],
-}
+};
 </script>
 
 <style scoped lang="scss">

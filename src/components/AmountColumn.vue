@@ -9,10 +9,8 @@
 </template>
 
 <script>
-import { QBtn, QInput } from 'quasar'
-import Big from 'big.js'
-import Vuex from 'vuex'
-import storeData from '../store'
+import { QBtn, QInput } from 'quasar';
+import Vuex from 'vuex';
 
 export default {
   components: { QBtn, QInput },
@@ -20,14 +18,14 @@ export default {
   computed: {
     ...Vuex.mapGetters(['getCurrency']),
     currencySymbol() {
-      return this.getCurrency(this.currency).currencySymbol
+      return this.getCurrency(this.currency).currencySymbol;
     },
     rate() {
-      const rate = this.amountColumn.rate
-      return rate ? rate.toFixed(4) : rate
+      const { rate } = this.amountColumn;
+      return rate ? rate.toFixed(4) : rate;
     },
     rateHint() {
-      return this.amountColumn.isSource ? null : `1 ${this.amountColumn.currency} = ${this.rate} ${this.currency}`
+      return this.amountColumn.isSource ? null : `1 ${this.amountColumn.currency} = ${this.rate} ${this.currency}`;
     },
   },
   methods: {
@@ -36,10 +34,10 @@ export default {
         toCurrency: this.currency,
         toAmount: parseFloat(this.amountColumn.amount.toFixed(2)),
         col: this.amountColumn.col,
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

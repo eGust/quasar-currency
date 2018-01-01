@@ -27,51 +27,54 @@
 </template>
 
 <script>
-import { QList, QBtn, QItem, QItemMain, QItemSide, QInput } from 'quasar'
-import Currency from './Currency'
+import _ from 'lodash';
+import { QList, QBtn, QItem, QItemMain, QItemSide, QInput } from 'quasar';
+import Currency from './Currency';
 
 export default {
   data: () => ({
     editingCurrency: null,
   }),
-  components: { Currency, QList, QBtn, QItem, QItemMain, QItemSide, QInput },
-  props: [ 'rowCurrencyBeforeChange', 'availableCurrencies', 'removable' ],
+  components: {
+    Currency, QList, QBtn, QItem, QItemMain, QItemSide, QInput,
+  },
+  props: ['rowCurrencyBeforeChange', 'availableCurrencies', 'removable'],
   computed: {
     filteredCurrencies() {
-      const key = (this.editingCurrency || '').trim().toLowerCase()
-          , matched = []
-          , unmatched = []
-      if (!key.length) return this.availableCurrencies
+      const key = (this.editingCurrency || '').trim().toLowerCase();
+      const matched = [];
+      const unmatched = [];
+      if (!key.length) return this.availableCurrencies;
 
       _(this.availableCurrencies).each((currency) => {
         if (currency.search.indexOf(key) >= 0) {
-          matched.push(currency)
+          matched.push(currency);
         } else {
-          unmatched.push(currency)
+          unmatched.push(currency);
         }
-      })
+      });
 
-      const temp = _(unmatched).filter(({search}) => {
-        let pos = 0
+      const temp = _(unmatched).filter(({ search }) => {
+        let pos = 0;
         for (const c of key) {
           pos = search.indexOf(c, pos)
           if (pos < 0) return false
         }
-        return true
-      }).value()
+        return true;
+      }).value();
 
-      return _.concat(matched, temp)
+      return _.concat(matched, temp);
     },
   },
   methods: {
     removeCurrency() {
-      this.$store.commit('removeRow')
+      this.$store.commit('removeRow');
     },
     updateCurrency(currency) {
-      this.$store.commit('updateRow', { currency })
+      this.$store.commit('updateRow', { currency });
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

@@ -1,5 +1,5 @@
 {
-  "presets": [["es2015", {"modules": false}], "stage-2", "env"],
-  "plugins": ["transform-runtime", "transform-object-rest-spread", "transform-class-properties", "transform-async-to-generator"],
+  "presets": ["env", "stage-0"],
+  "plugins": ["transform-runtime", "transform-async-to-generator"],
   "comments": false
 }

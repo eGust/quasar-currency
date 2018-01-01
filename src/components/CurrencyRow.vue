@@ -13,22 +13,24 @@
 </template>
 
 <script>
-import { QBtn, QIcon } from 'quasar'
-import Currency from './Currency'
-import AmountColumn from './AmountColumn'
+import { QBtn, QIcon } from 'quasar';
+import Currency from './Currency';
+import AmountColumn from './AmountColumn';
 
 export default {
-  components: { AmountColumn, Currency, QBtn, QIcon },
+  components: {
+    AmountColumn, Currency, QBtn, QIcon,
+  },
   props: ['currency', 'amountColumns', 'editingAmount', 'order', 'rowCount'],
   methods: {
     startEditRow() {
-      this.$store.commit('editCurrencyRow', {row: this.order})
+      this.$store.commit('editCurrencyRow', { row: this.order });
     },
     reorder(direction) {
-      this.$store.commit('swapRow', {row: this.order, direction})
+      this.$store.commit('swapRow', { row: this.order, direction });
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">

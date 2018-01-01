@@ -20,23 +20,23 @@
 </template>
 
 <script>
-import Vuex from 'vuex'
-import storeData from './store'
-import MainToolbar from './components/MainToolbar'
-import CurrencyTable from './components/CurrencyTable'
-import EditRowCurrency from './components/EditRowCurrency'
-import EditColumnAmount from './components/EditColumnAmount'
+import Vuex from 'vuex';
+import storeData from './store';
+import MainToolbar from './components/MainToolbar';
+import CurrencyTable from './components/CurrencyTable';
+import EditRowCurrency from './components/EditRowCurrency';
+import EditColumnAmount from './components/EditColumnAmount';
 
 export default {
   components: {
-    MainToolbar, CurrencyTable, EditRowCurrency, EditColumnAmount
+    MainToolbar, CurrencyTable, EditRowCurrency, EditColumnAmount,
   },
   computed: {
     ...Vuex.mapState(Object.keys(storeData.state)),
     ...Vuex.mapGetters(Object.keys(storeData.getters)),
   },
   methods: Vuex.mapActions(Object.keys(storeData.actions)),
-}
+};
 </script>
 
 <style lang="scss">

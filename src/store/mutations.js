@@ -1,44 +1,44 @@
-import Big from 'big.js'
-import Vue from 'vue'
+import Big from 'big.js';
+import Vue from 'vue';
 
 export default {
   editColumnAmount(state, payload = null) {
     if (payload) {
-      const from = state.fromColumns[payload.col]
-      payload.fromAmount = from.amount.toFixed(2)
-      payload.fromCurrency = from.currency
+      const from = state.fromColumns[payload.col];
+      payload.fromAmount = from.amount.toFixed(2);
+      payload.fromCurrency = from.currency;
     }
-    state.editingAmount = payload
+    state.editingAmount = payload;
   },
-  submitColumnAmount(state, {amount}) {
-    const { col, toCurrency } = state.editingAmount
-    console.log({col, toCurrency, amount})
+  submitColumnAmount(state, { amount }) {
+    const { col, toCurrency } = state.editingAmount;
+    console.log({ col, toCurrency, amount });
     Vue.set(state.fromColumns, col, {
       currency: toCurrency,
       amount: new Big(amount),
-    })
-    state.editingAmount = null
+    });
+    state.editingAmount = null;
   },
-  editCurrencyRow(state, {row}) {
-    state.editingCurrencyRow = row
+  editCurrencyRow(state, { row }) {
+    state.editingCurrencyRow = row;
   },
-  updateRow(state, {currency = null}) {
+  updateRow(state, { currency = null }) {
     if (currency) {
-      Vue.set(state.rows, state.editingCurrencyRow, currency)
+      Vue.set(state.rows, state.editingCurrencyRow, currency);
     }
-    state.editingCurrencyRow = null
+    state.editingCurrencyRow = null;
   },
   removeRow(state) {
-    Vue.delete(state.rows, state.editingCurrencyRow)
-    state.editingCurrencyRow = null
+    Vue.delete(state.rows, state.editingCurrencyRow);
+    state.editingCurrencyRow = null;
   },
-  setCurrencyRows(state, {rows}) {
-    Vue.set(state, 'rows', rows)
+  setCurrencyRows(state, { rows }) {
+    Vue.set(state, 'rows', rows);
   },
-  setSource(state, {source}) {
-    state.source = source
+  setSource(state, { source }) {
+    state.source = source;
   },
   updateCache(state, json) {
-    Vue.set(state.cache, state.source, json)
+    Vue.set(state.cache, state.source, json);
   },
-}
+};

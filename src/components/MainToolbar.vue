@@ -2,32 +2,34 @@
   q-toolbar(color='yellow')
     q-toolbar-title.dark-text eCurrency v2.0.0
     q-select(
-      stack-label="Source" 
+      stack-label="Source"
       @change='changeSource'
-      :value='source' 
+      :value='source'
       :options=`providerList`
     )
 </template>
 
 <script>
-import { QToolbar, QToolbarTitle, QSelect } from 'quasar'
-import provider from '../store/providers'
-import _ from 'lodash'
+import _ from 'lodash';
+import { QToolbar, QToolbarTitle, QSelect } from 'quasar';
+import provider from '../store/providers';
 
-const PROVIDER_OPTIONS = _.map(provider, ({ key, title, icon }) => ({ label: title, value: key, image: icon }))
+const PROVIDER_OPTIONS = _.map(provider, ({ key, title, icon }) => ({
+  label: title, value: key, image: icon,
+}));
 
 export default {
   components: { QToolbar, QToolbarTitle, QSelect },
-  props: [ 'source' ],
+  props: ['source'],
   computed: {
     providerList: () => PROVIDER_OPTIONS,
   },
   methods: {
     changeSource(source) {
-      this.$emit('updateSourceRates', source)
+      this.$emit('updateSourceRates', source);
     },
   },
-}
+};
 </script>
 
 <style lang="scss">

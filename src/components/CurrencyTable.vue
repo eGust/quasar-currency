@@ -31,53 +31,56 @@
 </template>
 
 <script>
-import { QBtn } from 'quasar'
-import moment from 'moment'
-import Currency from './Currency'
-import CurrencyRow from './CurrencyRow'
-import Draggable from 'vuedraggable'
+import { QBtn } from 'quasar';
+import moment from 'moment';
+import Draggable from 'vuedraggable';
 
-const DRAGGABLE_OPTIONS = { handle: '.drag-handle' }
+import Currency from './Currency';
+import CurrencyRow from './CurrencyRow';
+
+const DRAGGABLE_OPTIONS = { handle: '.drag-handle' };
 
 export default {
-  components: { CurrencyRow, Currency, QBtn, Draggable },
-  props: [ 'currencyRows', 'fromColumns', 'timestamps' ],
+  components: {
+    CurrencyRow, Currency, QBtn, Draggable,
+  },
+  props: ['currencyRows', 'fromColumns', 'timestamps'],
   computed: {
     rows: {
       get() {
-        return this.currencyRows
+        return this.currencyRows;
       },
       set(value) {
-        this.$store.commit('setCurrencyRows', {rows: value.map(({currency}) => currency)})
+        this.$store.commit('setCurrencyRows', { rows: value.map(({ currency }) => currency) });
       },
     },
     rowCount() {
-      return this.currencyRows.length
+      return this.currencyRows.length;
     },
     fetched() {
-      return this.timestamps.fetched ? moment(this.timestamps.fetched).format('HH:mm:ss') : 'N/A'
+      return this.timestamps.fetched ? moment(this.timestamps.fetched).format('HH:mm:ss') : 'N/A';
     },
     timeout() {
-      return this.timestamps.timeout ? moment(this.timestamps.timeout).format('HH:mm:ss') : 'N/A'
+      return this.timestamps.timeout ? moment(this.timestamps.timeout).format('HH:mm:ss') : 'N/A';
     },
     timestamp() {
-      return this.timestamps.timestamp ? moment(this.timestamps.timestamp*1000).format('HH:mm:ss') : 'N/A'
+      return this.timestamps.timestamp ? moment(this.timestamps.timestamp * 1000).format('HH:mm:ss') : 'N/A';
     },
     draggableOptions: () => DRAGGABLE_OPTIONS,
   },
   methods: {
     addCurrencyRow() {
-      this.$store.commit('editCurrencyRow', {row: this.rowCount})
+      this.$store.commit('editCurrencyRow', { row: this.rowCount });
     },
-    editColumnAmount(col, {amount, currency}) {
+    editColumnAmount(col, { amount, currency }) {
       this.$store.commit('editColumnAmount', {
         col,
         toCurrency: currency,
         toAmount: parseFloat(amount.toFixed(2)),
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

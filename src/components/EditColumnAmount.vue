@@ -29,39 +29,41 @@
 </template>
 
 <script>
-import { QToolbar, QToolbarTitle, QBtn, QInput } from 'quasar'
-import Vue from 'vue'
-import Currency from './Currency'
+import { QToolbar, QToolbarTitle, QBtn, QInput } from 'quasar';
+import Vue from 'vue';
+import Currency from './Currency';
 
 export default {
   data: () => ({
     editingAmount: 0,
   }),
-  components: { QToolbar, QToolbarTitle, QBtn, QInput, Currency },
+  components: {
+    QToolbar, QToolbarTitle, QBtn, QInput, Currency,
+  },
   props: ['editing'],
   methods: {
     cancel() {
-      this.$store.commit('editColumnAmount')
+      this.$store.commit('editColumnAmount');
     },
     clear() {
-      this.editingAmount = 0
+      this.editingAmount = 0;
       Vue.nextTick(() => {
-        this.$refs.inputAmount.select()
-      })
+        this.$refs.inputAmount.select();
+      });
     },
     apply() {
-      const amount = this.editingAmount
-      if (amount == 0) return;
-      this.$store.commit('submitColumnAmount', { amount })
+      const amount = this.editingAmount;
+      if (amount === 0) return;
+      this.$store.commit('submitColumnAmount', { amount });
     },
   },
   beforeMount() {
-    this.editingAmount = this.editing.toAmount
+    this.editingAmount = this.editing.toAmount;
     Vue.nextTick(() => {
-      this.$refs.inputAmount.select()
-    })
+      this.$refs.inputAmount.select();
+    });
   },
-}
+};
 
 </script>
 
